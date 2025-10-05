@@ -6,8 +6,6 @@ Monitors trajectory tracking performance by computing cross-track error
 (minimum distance from robot to reference trajectory). Logs statistics
 and exports time-series data to CSV on shutdown.
 
-Author: Student
-License: MIT
 """
 
 import math

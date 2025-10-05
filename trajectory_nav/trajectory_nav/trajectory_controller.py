@@ -8,8 +8,6 @@ Tracks reference trajectory using geometric control law with lookahead distance.
 Control Law: ω = 2v·sin(α)/L
 where α is heading error, L is lookahead distance, v is desired velocity.
 
-Author: Student
-License: MIT
 """
 
 import math

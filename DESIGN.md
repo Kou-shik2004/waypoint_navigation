@@ -556,6 +556,12 @@ v_scaled = v_max / (1 + k_curv * abs(curvature))
 
 ---
 
+## Obstacle Avoidance Extension (Future Work)
+
+**Note:** A prototype `obstacle_detector.py` node implementing the basic detection algorithm is included in the codebase as proof-of-concept. This demonstrates the proposed architecture but is not integrated with the trajectory controller in this submission.
+
+---
+
 ## Conclusion
 
 This trajectory navigation system demonstrates:

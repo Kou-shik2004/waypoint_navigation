@@ -6,8 +6,6 @@ Generates smooth trajectories from discrete waypoints using cubic spline
 interpolation with arc-length parameterization. Publishes to /trajectory
 topic with TRANSIENT_LOCAL QoS for late-joiner support.
 
-Author: Student
-License: MIT
 """
 
 import math
