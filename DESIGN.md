@@ -163,7 +163,6 @@ Where:
 - α = heading error (angle from robot to lookahead point)
 - L = lookahead distance (m)
 
-**[DIAGRAM: Pure pursuit geometry showing robot, lookahead point, and heading error]**
 
 **Why Pure Pursuit?**
 
@@ -399,7 +398,7 @@ MAX_ANGULAR_VELOCITY = 2.50  # Conservative limit
 - Impact: Overshoot on turns, slower transient response
 - Mitigation: Reduce control gains, add feedforward compensation
 
-**[PLOT: Simulated vs real robot velocity response showing delay]**
+
 
 ### Performance Expectations
 
@@ -525,7 +524,6 @@ v_scaled = v_max / (1 + k_curv * abs(curvature))
 - S-Curve: Max error 68mm at inflection points  
 - Mean error remains acceptable: 14-19mm
 
-**[DIAGRAM: Pure pursuit corner cutting geometry]**
 
 **Trade-offs:**
 - Smaller lookahead: Reduces cutting but increases oscillation
@@ -602,6 +600,7 @@ This trajectory navigation system demonstrates:
 5. **Real-World Readiness:** Clear deployment path with calibration procedures and expected performance
 
 **Test Results:**
+
 - Straight line: RMS 5.4mm (excellent)
 - Circle: RMS 23.2mm (good for continuous curvature)
 - S-Curve: RMS 18.5mm (good for variable curvature)
