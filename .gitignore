@@ -6,4 +6,15 @@ CLAUDE.md
 project-context.md
 .cursor/
 .github/
-.vscode/__pycache__/
+# VS Code settings
+.vscode/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Build artifacts
+*.log
+*.egg-info/
+build/
+install/
