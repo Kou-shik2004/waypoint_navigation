@@ -18,7 +18,7 @@ sudo apt install ros-humble-desktop python3-argcomplete python3-colcon-common-ex
 sudo apt install ros-humble-rclpy ros-humble-nav-msgs ros-humble-geometry-msgs ros-humble-sensor-msgs ros-humble-std-msgs ros-humble-visualization-msgs ros-humble-tf2-ros
 
 # TurtleBot3 packages
-sudo apt install ros-humble-turtlebot3* ros-humble-gazebo-ros-pkgs ros-humble-gazebo-ros2-control
+sudo apt install ros-humble-turtlebot3-gazebo ros-humble-gazebo-ros-pkgs ros-humble-gazebo-ros2-control
 
 # Additional dependencies
 sudo apt install python3-numpy python3-scipy python3-matplotlib
