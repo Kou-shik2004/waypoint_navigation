@@ -177,7 +177,21 @@ python3 trajectory_nav/scripts/generate_plots.py
 
 ### Output Files
 - **CSV Metrics**: `results/csv/traj_*.csv`
+
 - **Error Plots**: `results/plots/*_error.png`
+
+
+![line](results/plots/straight_error.png)
+
+![circle](results/plots/circle_error.png)
+
+![scurve](results/plots/scurve_error.png)
+
+![hybrid](results/plots/hybrid_error.png)
+
+
+
+
 - **Summary Report**: `results/RESULTS.md`
 
 ## System Requirements
