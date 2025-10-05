@@ -531,35 +531,13 @@ v_scaled = v_max / (1 + k_curv * abs(curvature))
 **Causes:**
 1. Controller velocity scaling: `v = v_desired × cos(α)`
 2. Differential drive physics: Cannot maintain linear speed while turning sharply
-3. TurtleBot3 motor saturation during simultaneous linear + angular motion
 
 **Quantitative Impact:**
-- Straight line: 0.173 m/s (87% of commanded 0.20 m/s)
-- Circle: 0.136 m/s (68% of commanded 0.20 m/s)
+- Straight line: 0.173 m/s (80% of commanded 0.20 m/s approximately)
+- Circle: 0.136 m/s (70% of commanded 0.20 m/s approximately)
 
 **Acceptable?** Yes - smooth, accurate tracking more important than speed adherence. Robot completes trajectory successfully, just slower than predicted.
 
-### 3. Closed-Loop Path Limitation
-
-**Issue:** Robot stops immediately if trajectory start position equals end position
-
-**Root Cause:**
-```python
-# Goal detection logic
-if distance_to_goal < goal_tolerance:
-    goal_reached = True  # Triggers at t=0 if start == end!
-```
-
-**Impact:** Cannot handle figure-8, closed loops, or cyclic trajectories
-
-**Workaround:** Ensure trajectories have spatially distinct start and end points
-
-**Proper Fix (Not Implemented):**
-```python
-# Only check goal after traveling minimum distance
-if self.distance_traveled > 0.5 and distance_to_goal < goal_tolerance:
-    goal_reached = True
-```
 
 ### 4. Constant Velocity Profile
 
