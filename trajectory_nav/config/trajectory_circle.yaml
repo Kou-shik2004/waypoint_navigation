@@ -1,0 +1,48 @@
+# Circular trajectory configuration
+# Test 2: Curvature handling validation
+# Expected: RMS error < 0.15m, completion time ~31s
+
+trajectory_generator:
+  ros__parameters:
+    # Circle: radius=1m, center=(1,1), 20 evenly spaced waypoints
+    # Formula: x = 1 + cos(θ), y = 1 + sin(θ), θ ∈ [0, 2π]
+    waypoints: [
+      2.0, 1.0,
+      1.951057, 1.309017,
+      1.809017, 1.587785,
+      1.587785, 1.809017,
+      1.309017, 1.951057,
+      1.0, 2.0,
+      0.690983, 1.951057,
+      0.412215, 1.809017,
+      0.190983, 1.587785,
+      0.048943, 1.309017,
+      0.0, 1.0,
+      0.048943, 0.690983,
+      0.190983, 0.412215,
+      0.412215, 0.190983,
+      0.690983, 0.048943,
+      1.0, 0.0,
+      1.309017, 0.048943,
+      1.587785, 0.190983,
+      1.809017, 0.412215,
+      1.951057, 0.690983
+    ]
+    
+    num_samples: 200
+    desired_velocity: 0.20
+    frame_id: 'odom'
+    use_sim_time: true
+
+trajectory_controller:
+  ros__parameters:
+    lookahead_distance: 0.35  # Slightly larger for curved path
+    goal_tolerance: 0.05
+    use_sim_time: true
+
+trajectory_monitor:
+  ros__parameters:
+    csv_output_path: 'trajectory_metrics'
+    use_sim_time: true
+
+
