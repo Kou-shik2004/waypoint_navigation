@@ -1,0 +1,39 @@
+# S-Curve: Serpentine path, y = 0.6*sin(1.2*x), 16 waypoints
+# Target: RMS < 0.20m
+
+trajectory_generator:
+  ros__parameters:
+    waypoints: [
+      0.0, 0.0,
+      0.4, 0.275,
+      0.8, 0.499,
+      1.2, 0.600,
+      1.6, 0.546,
+      2.0, 0.339,
+      2.4, 0.039,
+      2.8, -0.275,
+      3.2, -0.499,
+      3.6, -0.600,
+      4.0, -0.546,
+      4.4, -0.339,
+      4.8, -0.039,
+      5.2, 0.275,
+      5.6, 0.499,
+      6.0, 0.600
+    ]
+    num_samples: 250
+    desired_velocity: 0.15  # Slower for curves
+    frame_id: 'odom'
+    use_sim_time: true
+
+trajectory_controller:
+  ros__parameters:
+    lookahead_distance: 0.35
+    goal_tolerance: 0.05
+    use_sim_time: true
+
+trajectory_monitor:
+  ros__parameters:
+    csv_output_path: 'trajectory_metrics'
+    use_sim_time: true
+

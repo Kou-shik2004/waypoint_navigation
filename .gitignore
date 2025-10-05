@@ -1,1 +1,8 @@
 /.DS_Store
+
+# Documentation and development files
+documentation/
+CLAUDE.md
+*.mdc
+project-context.md
+.cursor/

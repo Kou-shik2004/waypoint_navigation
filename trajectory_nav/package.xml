@@ -4,7 +4,7 @@
   <name>trajectory_nav</name>
   <version>1.0.0</version>
   <description>ROS2 trajectory navigation system with smooth path generation and pure pursuit control for TurtleBot3 Burger</description>
-  <maintainer email="student@example.com">Student</maintainer>
+  <maintainer email="koushik.s2022@vitstudent.ac.in">Student</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_python</buildtool_depend>

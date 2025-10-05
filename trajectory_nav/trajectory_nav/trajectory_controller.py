@@ -45,7 +45,6 @@ class TrajectoryController(Node):
         # 1. Declare parameters with defaults
         self.declare_parameter('lookahead_distance', 0.30)
         self.declare_parameter('goal_tolerance', 0.05)
-        self.declare_parameter('use_sim_time', True)
         
         # 2. Retrieve and validate parameters
         self.lookahead_distance = self.get_parameter('lookahead_distance').value
@@ -66,6 +65,9 @@ class TrajectoryController(Node):
         self.desired_velocity = 0.20  # Will be overridden from trajectory
         self.target_index = 0
         self.goal_reached = False
+        
+        # Debug logging counter
+        self.loop_counter = 0
         
         # 3. Create QoS profiles
         # Trajectory uses TRANSIENT_LOCAL (must match publisher)
@@ -103,11 +105,30 @@ class TrajectoryController(Node):
         )
     
     def _trajectory_callback(self, msg: Path):
-        """Store received trajectory."""
+        """
+        Store received trajectory.
+        Only reset target_index for NEW trajectories (different poses).
+        Generator republishes same trajectory every 1s for late-joiners (TRANSIENT_LOCAL QoS).
+        """
+        # Check if this is a new trajectory or just a republish
+        is_new_trajectory = (
+            self.trajectory is None or
+            len(msg.poses) != len(self.trajectory.poses) or
+            (len(msg.poses) > 0 and 
+             (msg.poses[0].pose.position.x != self.trajectory.poses[0].pose.position.x or
+              msg.poses[0].pose.position.y != self.trajectory.poses[0].pose.position.y))
+        )
+        
         self.trajectory = msg
-        self.target_index = 0
-        self.goal_reached = False
-        self.get_logger().info(f'Received trajectory with {len(msg.poses)} poses')
+        
+        # Only reset tracking state for genuinely new trajectories
+        if is_new_trajectory:
+            self.target_index = 0
+            self.goal_reached = False
+            self.get_logger().info(f'Received NEW trajectory with {len(msg.poses)} poses')
+        else:
+            # Just a republish of the same trajectory - don't reset progress
+            pass  # Silently ignore republishes
     
     def _odom_callback(self, msg: Odometry):
         """Store current robot pose and extract yaw from quaternion."""
@@ -138,20 +159,24 @@ class TrajectoryController(Node):
             return
         
         try:
-            # Check if goal reached
-            goal_pose = self.trajectory.poses[-1].pose.position
-            distance_to_goal = self._compute_distance(
-                self.current_pose.x, self.current_pose.y,
-                goal_pose.x, goal_pose.y
-            )
+            # Check if goal reached (only after making progress to avoid immediate detection)
+            # Require at least 10% progress through trajectory before checking goal
+            min_progress = max(10, int(0.1 * len(self.trajectory.poses)))
             
-            if distance_to_goal < self.goal_tolerance:
-                self.get_logger().info(
-                    f'Goal reached! Final distance: {distance_to_goal:.3f}m'
+            if self.target_index >= min_progress:
+                goal_pose = self.trajectory.poses[-1].pose.position
+                distance_to_goal = self._compute_distance(
+                    self.current_pose.x, self.current_pose.y,
+                    goal_pose.x, goal_pose.y
                 )
-                self.goal_reached = True
-                self._publish_zero_velocity()
-                return
+                
+                if distance_to_goal < self.goal_tolerance:
+                    self.get_logger().info(
+                        f'Goal reached! Final distance: {distance_to_goal:.3f}m'
+                    )
+                    self.goal_reached = True
+                    self._publish_zero_velocity()
+                    return
             
             # Find lookahead point on trajectory
             lookahead_point, target_idx = self._find_lookahead_point()
@@ -177,6 +202,25 @@ class TrajectoryController(Node):
                 -self.MAX_ANGULAR_VELOCITY,
                 self.MAX_ANGULAR_VELOCITY
             )
+            
+            # Debug logging (every 100 iterations = once per 5 seconds at 20Hz)
+            self.loop_counter += 1
+            if self.loop_counter % 100 == 0:
+                # Compute debug info
+                dx = lookahead_point.x - self.current_pose.x
+                dy = lookahead_point.y - self.current_pose.y
+                distance_to_target = math.sqrt(dx**2 + dy**2)
+                desired_heading = math.atan2(dy, dx)
+                alpha = self.normalize_angle(desired_heading - self.current_yaw)
+                
+                self.get_logger().info(
+                    f'[CONTROL] Index: {target_idx}/{len(self.trajectory.poses)} | '
+                    f'Dist: {distance_to_target:.3f}m | '
+                    f'Alpha: {math.degrees(alpha):.1f}° | '
+                    f'Cmd: v={linear_vel:.3f} ω={angular_vel:.3f} | '
+                    f'Pos: ({self.current_pose.x:.2f}, {self.current_pose.y:.2f}) | '
+                    f'Target: ({lookahead_point.x:.2f}, {lookahead_point.y:.2f})'
+                )
             
             # Publish velocity command
             self._publish_velocity(linear_vel, angular_vel)

@@ -1,40 +1,23 @@
-# Straight line trajectory configuration
-# Test 1: Basic tracking validation
-# Expected: RMS error < 0.05m, completion time ~20s
+# Straight Line: 4m along X-axis
+# Target: RMS < 0.05m
 
 trajectory_generator:
   ros__parameters:
-    # Waypoints as flat list: [x0, y0, x1, y1, ...]
-    # Straight line from (0,0) to (4,0)
     waypoints: [0.0, 0.0, 1.0, 0.0, 2.0, 0.0, 3.0, 0.0, 4.0, 0.0]
-    
-    # Number of interpolated points in smooth trajectory
     num_samples: 200
-    
-    # Desired velocity in m/s (TurtleBot3 max: 0.22 m/s)
     desired_velocity: 0.20
-    
-    # Coordinate frame for all poses
     frame_id: 'odom'
-    
-    # Use simulation time
     use_sim_time: true
 
 trajectory_controller:
   ros__parameters:
-    # Pure pursuit lookahead distance in meters
     lookahead_distance: 0.30
-    
-    # Distance threshold to consider goal reached
     goal_tolerance: 0.05
-    
     use_sim_time: true
 
 trajectory_monitor:
   ros__parameters:
-    # CSV output filename (timestamp will be appended)
-    csv_output_path: 'trajectory_metrics'
-    
+    csv_output_path: 'trajectory_metrics_straight'
     use_sim_time: true
 
 

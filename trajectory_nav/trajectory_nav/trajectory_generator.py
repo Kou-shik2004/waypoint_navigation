@@ -18,6 +18,7 @@ from scipy.integrate import cumulative_trapezoid
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy
+from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
 from nav_msgs.msg import Path
 from geometry_msgs.msg import PoseStamped
@@ -37,12 +38,19 @@ class TrajectoryGenerator(Node):
     def __init__(self):
         super().__init__('trajectory_generator')
         
-        # 1. Declare parameters with defaults
-        self.declare_parameter('waypoints', [])
+        # 1. Declare parameters with explicit types
+        # Note: Empty list [] defaults to BYTE_ARRAY, so we use a double array default
+        self.declare_parameter(
+            'waypoints', 
+            [0.0],  # Typed default - will be overridden by YAML
+            ParameterDescriptor(
+                type=ParameterType.PARAMETER_DOUBLE_ARRAY,
+                description='Waypoints as flat list [x0,y0,x1,y1,...]'
+            )
+        )
         self.declare_parameter('num_samples', 200)
         self.declare_parameter('desired_velocity', 0.20)
         self.declare_parameter('frame_id', 'odom')
-        self.declare_parameter('use_sim_time', True)
         
         # 2. Retrieve and validate parameters
         waypoints_flat = self.get_parameter('waypoints').value
