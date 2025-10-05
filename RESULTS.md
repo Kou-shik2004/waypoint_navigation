@@ -16,7 +16,7 @@
 | **RMS Error (Straight)** | < 0.050 m | **0.0054 m** | Straight |
 | **RMS Error (Curved)** | < 0.150 m | **0.0138 m** | Hybrid |
 | **Max Error (Straight)** | < 0.100 m | **0.0100 m** | Straight |
-| **Max Error (Curved)** | < 0.300 m | **0.0868 m** | Circle |
+| **Max Error (Curved)** | < 0.300 m | **0.0332 m** | Hybrid |
 
 ## Test Details
 
@@ -130,19 +130,16 @@ The trajectory tracking system successfully demonstrates:
 
 **Overall Assessment: EXCELLENT** ✅
 
-All quantitative metrics meet project specifications. The system is ready for real-world deployment.
+All quantitative metrics meet project specifications. 
 
 ---
 
 ## Plots
 
-Error vs time plots for each test are available in `path_data/plots/`:
+Error vs time plots for each test are available in `results/plots/`:
 - `straight_error.png`
 - `circle_error.png`
 - `scurve_error.png`
+- `hybrid_error.png`
 
 ---
-
-*Generated: October 5, 2025*  
-*System: ROS2 Humble, TurtleBot3 Burger, Gazebo Simulation*
-
