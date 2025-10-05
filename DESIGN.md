@@ -7,6 +7,7 @@
 4. [ROS2 Design Patterns](#ros2-design-patterns)
 5. [Real Robot Deployment](#real-robot-deployment)
 6. [Known Limitations](#known-limitations)
+7. [AI Tools Used](#ai-tools-used)
 
 ---
 
@@ -605,4 +606,12 @@ This trajectory navigation system demonstrates:
 - Circle: RMS 23.2mm (good for continuous curvature)
 - S-Curve: RMS 18.5mm (good for variable curvature)
 
-All tests meet target thresholds (RMS < 50mm), validating design choices.
+All tests meet target thresholds (RMS < 50mm), validating design choices. Refer RESULTS.md
+
+---
+
+## AI Tools Used
+
+**Claude**: Used for idea research and debugging assistance throughout the development process.
+
+**Cursor IDE**: Used for code writing, documentation, and real-time debugging support.
