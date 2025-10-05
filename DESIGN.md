@@ -292,8 +292,6 @@ trajectory_generator:
 INIT → TRACKING → COMPLETED
 ```
 
-**No complex state machines:** Simplicity prevents bugs and enables clear reasoning about system behavior.
-
 ---
 
 ## Real Robot Deployment
