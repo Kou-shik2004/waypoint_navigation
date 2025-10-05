@@ -189,28 +189,19 @@ angular_velocity = (2.0 * velocity * sin(alpha)) / lookahead_distance
 linear_velocity = velocity * cos(alpha)  # Scale for heading correction
 ```
 
-### 4. Why Pure Pursuit Alone (No Additional PID)?
+### 4. Pure Pursuit Controller Design
 
-**Design Decision:** Use pure pursuit without additional PID layers
+**Control Algorithm:** Geometric path tracking via Pure Pursuit
 
-**Rationale:**
+**Why Pure Pursuit?**
 
-**Pure pursuit is already a complete controller:**
-- Inherently generates both linear and angular velocities from geometry
-- No need for separate velocity controllers
+Pure Pursuit is fundamentally a geometric controller that uses the robot's position relative to a lookahead point on the reference path to compute steering commands. The control law directly maps the spatial relationship between robot and path into velocity commands through a single geometric formula. This directness makes the controller both intuitive to understand and straightforward to tune.
 
-**Parameter complexity:**
-- Pure pursuit: 2 parameters (lookahead distance, desired velocity)
-- Pure pursuit + PID: 8+ parameters (Kp, Ki, Kd for both linear and angular)
-- Simpler system is easier to tune, debug, and explain
+The algorithm requires only two parameters: lookahead distance and desired velocity. The lookahead distance determines how far ahead on the path the robot aims, which directly controls the tradeoff between responsive tracking and smooth motion. The desired velocity sets the forward speed, constrained by the robot's physical limits. Both parameters have clear physical interpretations that make tuning systematic rather than trial-and-error.
 
-**Empirical validation:**
-- Offline simulation: RMS 0.016m without PID
-- ROS2 straight line: RMS 0.005m without PID  
-- ROS2 circle: RMS 0.023m without PID
-- Performance meets requirements without added complexity
+**Empirical Validation:**
 
-**KISS Principle:** Can always add PID later if performance inadequate (it's not). Starting simple enables systematic improvement if needed.
+The offline simulation validated the control law before any ROS2 integration, achieving RMS error of 1.6cm on the test trajectory. This proved the geometric approach was mathematically sound. The ROS2 implementation maintained this performance across different trajectory types, with straight line tracking at 5.4mm RMS error and circular paths at 23.2mm RMS error. These results demonstrate that the pure geometric approach provides sufficient accuracy for the application requirements without additional control layers.
 
 ### 5. Cross-Track Error Computation
 
