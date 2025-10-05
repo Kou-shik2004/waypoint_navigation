@@ -102,6 +102,40 @@ source install/setup.bash
 # Launch trajectory system with different configurations
 ```
 
+## Running Unit Tests
+
+The package includes comprehensive unit tests using pytest to validate core algorithmic functions, parameter validation, and node initialization.
+
+### Install pytest (if not already installed)
+
+```bash
+sudo apt install python3-pytest
+```
+
+### Run Tests
+
+```bash
+# Navigate to workspace
+cd ~/ros2_ws
+
+# Navigate to the trajectory_nav directory
+cd src/waypoint_navigation/trajectory_nav
+
+# Run all tests with verbose output
+python3 -m pytest test.py -v
+```
+
+### Test Coverage
+
+The test suite includes:
+- **Angle normalization**: Validates angle wrapping to [-π, π] range
+- **Distance computation**: Tests Euclidean distance calculations
+- **Velocity clamping**: Ensures TurtleBot3 physical limits are enforced
+- **Cross-track error**: Verifies trajectory deviation measurement
+- **Controller initialization**: Tests default parameter loading
+- **Monitor initialization**: Validates performance tracking setup
+- **Edge cases**: Tests boundary conditions and error handling
+
 ## Configuration Options
 
 ### Available Trajectory Configurations

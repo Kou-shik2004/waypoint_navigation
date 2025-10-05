@@ -5,3 +5,5 @@ CLAUDE.md
 *.mdc
 project-context.md
 .cursor/
+.github/
+.vscode/__pycache__/
