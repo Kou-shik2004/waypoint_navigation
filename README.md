@@ -203,11 +203,19 @@ python3 trajectory_nav/scripts/generate_plots.py
 
 ## Expected Results
 
-### Performance Targets
-- **Straight Line**: RMS error < 5mm, Max error < 10mm
-- **Circle**: RMS error < 23mm, Max error < 87mm  
-- **S-Curve**: RMS error < 19mm, Max error < 68mm
-- **Hybrid**: RMS error < 14mm, Max error < 33mm
+### Performance Requirements
+
+**Engineering Requirement:**
+- RMS tracking error < 30mm (safe navigation for 160mm wheelbase robot)
+- Max error < 100mm (collision avoidance margin)
+
+**Prediction Methodology:**
+- Baseline: Offline Python simulation achieved 16mm RMS under ideal kinematics
+- Expected Gazebo range: 10-30mm (accounting for dynamics, sensor noise, discretization)
+- Literature: Pure pursuit typically achieves 10-30mm RMS in simulation environments
+
+**Rationale:**
+The 30mm requirement represents ~20% of the robot's 160mm wheelbase, providing safe navigation margins while being achievable with pure pursuit control.
 
 ### Output Files
 - **CSV Metrics**: `results/csv/traj_*.csv`
